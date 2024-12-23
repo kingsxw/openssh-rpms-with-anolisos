@@ -225,6 +225,8 @@ jobs:
       - build_al2023
       - build_al2
       - build_al1
+      - build_an8
+      - build_an7
       - build_el9
       - build_el8
       - build_el7
@@ -248,6 +250,16 @@ jobs:
         with:
           name: al1-amd64
           path: ./output
+
+      - uses: actions/download-artifact@v4
+        with:
+            name: an8-amd64
+            path: ./output
+  
+      - uses: actions/download-artifact@v4
+        with:
+            name: an7-amd64
+            path: ./output
 
       - uses: actions/download-artifact@v4
         with:
