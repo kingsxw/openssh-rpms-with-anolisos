@@ -83,7 +83,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Build the tagged Docker image
-        run: docker build . --file ./docker/Dockerfile.anolis --tag anolis8
+        run: docker build . --file ./docker/Dockerfile.anolis --tag anolis8 --build-arg VERSION_NUM="8"
       - name: "Compile Anolis OS 8 (amd64)"
         run: |
           docker run --rm -v ${{ github.workspace }}/output:/data/el7/RPMS/x86_64 anolis8
