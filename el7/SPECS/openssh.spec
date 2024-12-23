@@ -1,5 +1,5 @@
-%{?!opensslver: %global opensslver 3.0.8}
-%{?!opensshver: %global opensshver 9.6p1}
+%{?!opensslver: %global opensslver 3.4.0}
+%{?!opensshver: %global opensshver 9.9p1}
 
 %define static_openssl 1
 
@@ -306,13 +306,23 @@ make install DESTDIR=$RPM_BUILD_ROOT
 # Modify sshd config file.
 sed -E -i 's/^#?( ?)*GSSAPIAuthentication.*$/GSSAPIAuthentication yes/' $RPM_BUILD_ROOT/etc/ssh/sshd_config
 sed -E -i 's/^#?( ?)*GSSAPICleanupCredentials.*$/GSSAPICleanupCredentials no/' $RPM_BUILD_ROOT/etc/ssh/sshd_config
-cat << EOF >> $RPM_BUILD_ROOT/etc/ssh/sshd_config
-PubkeyAcceptedAlgorithms +ssh-rsa
+cat << EOF > $RPM_BUILD_ROOT/etc/ssh/sshd_config
+Port 22
+Protocol 2
 PermitRootLogin yes
 PasswordAuthentication yes
-UseDNS no
+AuthorizedKeysFile      .ssh/authorized_keys
+KbdInteractiveAuthentication no
+GSSAPIAuthentication no
 UsePAM yes
-KexAlgorithms -diffie-hellman-group1-sha1,diffie-hellman-group1-sha256,diffie-hellman-group14-sha1,diffie-hellman-group14-sha256,diffie-hellman-group15-sha256,diffie-hellman-group15-sha512,diffie-hellman-group16-sha256,diffie-hellman-group16-sha512,diffie-hellman-group17-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha512
+AllowAgentForwarding no
+AllowTcpForwarding no
+X11Forwarding no
+Compression no
+ClientAliveInterval 600
+ClientAliveCountMax 0
+UseDNS no
+Subsystem       sftp    /usr/libexec/openssh/sftp-server
 EOF
 # Modify ssh config file, to ensure that traditional RSA-type key authentication is available to avoid git clone failures.
 # See: https://support.genymotion.com/hc/en-us/articles/9500420360093-I-get-the-error-no-matching-host-key-type-found-Their-offer-ssh-rsa-when-trying-to-connect-with-SSH
