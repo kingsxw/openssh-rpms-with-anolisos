@@ -1,0 +1,61 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Create amd64 release test an8 v2
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    tags: [ "v*" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build_an8:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+          
+  # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Build the tagged Docker image
+      run: docker build . --file ./docker/Dockerfile.anolis --tag anolis8 --build-arg VERSION_NUM="8"
+    - name: "Compile Anolis OS 8 (amd64)"
+      run: |
+        docker run --rm -v ${{ github.workspace }}/output:/data/el7/RPMS/x86_64 anolis8
+        
+    - uses: actions/upload-artifact@v4
+      with:
+        name: an8-amd64
+        path: ${{ github.workspace }}/output
+        
+  create_release:
+    needs:
+    - build_an8
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v4
+      with:
+          name: an8-amd64
+          path: ./output
+
+    - name: Get tag message
+      run: |
+        echo -e "> Automated release created by GitHub Actions.\n" > ${{ github.workspace }}/RELEASE.md
+        GITHUB_REF=${{ github.ref }}
+        TAG_NAME="${GITHUB_REF#refs/tags/}"
+        git tag -l --format='%(contents)' "${TAG_NAME}" | tee -a ${{ github.workspace }}/RELEASE.md
+
+    - name: Create Release
+      id: create_release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "${{ github.workspace }}/output/*"
+        bodyFile: ${{ github.workspace }}/RELEASE.md
+        token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true
