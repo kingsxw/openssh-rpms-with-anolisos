@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build the tagged Docker image
-        run: docker build . --file ./docker/Dockerfile.anolis --tag amazonlinux2023 --build-arg VERSION_NUM="2023"
+        run: docker build . --file ./docker/Dockerfile.amazonlinux --tag amazonlinux2023 --build-arg VERSION_NUM="2023"
 
       - name: "Compile Amazon Linux 2023 (amd64)"
         run: |
@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build the tagged Docker image
-        run: docker build . --file ./docker/Dockerfile.anolis --tag amazonlinux2 --build-arg VERSION_NUM="2"
+        run: docker build . --file ./docker/Dockerfile.amazonlinux --tag amazonlinux2 --build-arg VERSION_NUM="2"
 
       - name: "Compile Amazon Linux 2 (amd64)"
         run: |
@@ -68,7 +68,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build the tagged Docker image
-        run: docker build . --file ./docker/Dockerfile.anolis --tag amazonlinux1 --build-arg VERSION_NUM="1"
+        run: docker build . --file ./docker/Dockerfile.amazonlinux --tag amazonlinux1 --build-arg VERSION_NUM="1"
 
       - name: "Compile Amazon Linux 1 (amd64)"
         run: |
@@ -115,7 +115,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Build the tagged Docker image
-      run: docker build . --file ./docker/Dockerfile.anolis --tag anolis7 --build-arg VERSION_NUM="7"
+      run: docker build . --file ./docker/Dockerfile.anolis --tag anolis7 --build-arg VERSION_NUM="7.9-x86_64"
       
     - name: "Compile Anolis OS 7 (amd64)"
       run: |
