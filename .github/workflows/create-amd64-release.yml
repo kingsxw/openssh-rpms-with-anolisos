@@ -23,12 +23,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Build the tagged Docker image
+        run: docker build . --file ./docker/Dockerfile.anolis --tag amazonlinux2023 --build-arg VERSION_NUM="2023"
+
       - name: "Compile Amazon Linux 2023 (amd64)"
         run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/amzn2023/RPMS/x86_64 ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:amazonlinux2023
+          docker run --rm -v ${{ github.workspace }}/output:/data/amzn2023/RPMS/x86_64 amazonlinux2023
 
       - uses: actions/upload-artifact@v4
-        with:
+        with: 
           name: al2023-amd64
           path: ${{ github.workspace }}/output
 
@@ -42,9 +45,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Build the tagged Docker image
+        run: docker build . --file ./docker/Dockerfile.anolis --tag amazonlinux2 --build-arg VERSION_NUM="2"
+
       - name: "Compile Amazon Linux 2 (amd64)"
         run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/amzn2/RPMS/x86_64 ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:amazonlinux2
+          docker run --rm -v ${{ github.workspace }}/output:/data/amzn2/RPMS/x86_64 amazonlinux2
 
       - uses: actions/upload-artifact@v4
         with:
@@ -61,9 +67,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Build the tagged Docker image
+        run: docker build . --file ./docker/Dockerfile.anolis --tag amazonlinux1 --build-arg VERSION_NUM="1"
+
       - name: "Compile Amazon Linux 1 (amd64)"
         run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/amzn1/RPMS/x86_64 ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:amazonlinux1
+          docker run --rm -v ${{ github.workspace }}/output:/data/amzn1/RPMS/x86_64 amazonlinux1
 
       - uses: actions/upload-artifact@v4
         with:
@@ -80,18 +89,20 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Build the tagged Docker image
-        run: docker build . --file ./docker/Dockerfile.anolis --tag anolis8 --build-arg VERSION_NUM="8"
-      - name: "Compile Anolis OS 8 (amd64)"
-        run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/el7/RPMS/x86_64 anolis8
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build the tagged Docker image
+      run: docker build . --file ./docker/Dockerfile.anolis --tag anolis8 --build-arg VERSION_NUM="8"
+      
+    - name: "Compile Anolis OS 8 (amd64)"
+      run: |
+        docker run --rm -v ${{ github.workspace }}/output:/data/el7/RPMS/x86_64 anolis8
         
-      - uses: actions/upload-artifact@v4
-        with:
-          name: an8-amd64
-          path: ${{ github.workspace }}/output
+    - uses: actions/upload-artifact@v4
+      with:
+        name: an8-amd64
+        path: ${{ github.workspace }}/output  
         
   build_an7:
     # The type of runner that the job will run on
@@ -100,17 +111,20 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build the tagged Docker image
+      run: docker build . --file ./docker/Dockerfile.anolis --tag anolis7 --build-arg VERSION_NUM="7"
+      
+    - name: "Compile Anolis OS 7 (amd64)"
+      run: |
+        docker run --rm -v ${{ github.workspace }}/output:/data/el7/RPMS/x86_64 anolis7
         
-      - name: "Compile Anolis OS 7 (amd64)"
-        run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/el7/RPMS/x86_64 ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:anolis7
-        
-      - uses: actions/upload-artifact@v4
-        with:
-          name: an7-amd64
-          path: ${{ github.workspace }}/output
+    - uses: actions/upload-artifact@v4
+      with:
+        name: an7-amd64
+        path: ${{ github.workspace }}/output
                   
 
   build_el9:
@@ -123,9 +137,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Build the tagged Docker image
+        run: docker build . --file ./docker/Dockerfile.centos-stream --tag centos-stream9 --build-arg VERSION_NUM="9"
+        
       - name: "Compile CentOS Stream 9 (amd64)"
         run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/el7/RPMS/x86_64 ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:centos-stream9
+          docker run --rm -v ${{ github.workspace }}/output:/data/el7/RPMS/x86_64  centos-stream9
 
       - uses: actions/upload-artifact@v4
         with:
@@ -141,9 +158,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Build the tagged Docker image
+        run: docker build . --file ./docker/Dockerfile.centos-stream --tag centos-stream8 --build-arg VERSION_NUM="8"
+        
       - name: "Compile CentOS Stream 8 (amd64)"
         run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/el7/RPMS/x86_64 ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:centos-stream8
+          docker run --rm -v ${{ github.workspace }}/output:/data/el7/RPMS/x86_64  centos-stream8
 
       - uses: actions/upload-artifact@v4
         with:
@@ -160,9 +181,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Build the tagged Docker image
+        run: docker build . --file ./docker/Dockerfile.centos --tag centos7 --build-arg VERSION_NUM="7"
+
       - name: "Compile CentOS 7 (amd64)"
         run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/el7/RPMS/x86_64 ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:centos7
+          docker run --rm -v ${{ github.workspace }}/output:/data/el7/RPMS/x86_64 centos7
 
       - uses: actions/upload-artifact@v4
         with:
@@ -179,10 +203,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Build the tagged Docker image
+        run: docker build . --file ./docker/Dockerfile.centos --tag centos6 --build-arg VERSION_NUM="6"
+
       - name: "Compile CentOS 6 (amd64)"
         run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/el6/RPMS/x86_64 ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:centos6
-
+          docker run --rm -v ${{ github.workspace }}/output:/data/el6/RPMS/x86_64 centos6
       - uses: actions/upload-artifact@v4
         with:
           name: el6-amd64
@@ -212,9 +238,12 @@ jobs:
           curl -O -L -k $PERLMIR/$PERLSRC
           popd
 
+      - name: Build the tagged Docker image
+        run: docker build . --file ./docker/Dockerfile.centos --tag centos5 --build-arg VERSION_NUM="5"
+
       - name: "Compile CentOS 5 (amd64)"
         run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/el5/RPMS/x86_64 -v ${{ github.workspace }}/downloads:/data/downloads ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:centos5
+          docker run --rm -v ${{ github.workspace }}/output:/data/el5/RPMS/x86_64 -v ${{ github.workspace }}/downloads:/data/downloads centos5
 
       - uses: actions/upload-artifact@v4
         with:
