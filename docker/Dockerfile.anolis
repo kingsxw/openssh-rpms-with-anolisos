@@ -9,7 +9,7 @@ COPY . /data
 
 RUN if [ "$VERSION_NUM" = "8" ]; then \
         yum install -y perl perl-IPC-Cmd; \
-    elif [ "$VERSION_NUM" = "7" ]; then \
+    elif [ "$VERSION_NUM" = "7.9-x86_64" ]; then \
         yum install -y perl-IPC-Cmd imake; \
     fi && \
     yum groupinstall -y "Development Tools" && \
