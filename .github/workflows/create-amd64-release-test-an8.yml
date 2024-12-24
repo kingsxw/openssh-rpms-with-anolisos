@@ -4,12 +4,11 @@ name: Create amd64 release test an8
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    tags: [ "v*" ]
-
-  # Allows you to run this workflow manually from the Actions tab
+  repository_dispatch:
   workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
