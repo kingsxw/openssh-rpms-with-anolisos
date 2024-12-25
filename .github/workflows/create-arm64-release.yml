@@ -93,7 +93,7 @@ jobs:
       uses: docker/setup-qemu-action@v3
 
     - name: Build the tagged Docker image
-      run: docker build . --platform linux/arm64 --file ./docker/Dockerfile.anolis --tag anolis7 --build-arg VERSION_NUM="7.9-x86_64"
+      run: docker build . --platform linux/arm64 --file ./docker/Dockerfile.anolis --tag anolis7 --build-arg VERSION_NUM="7.9-aarch64"
       
     - name: "Compile Anolis OS 7 (arm64)"
       run: |
