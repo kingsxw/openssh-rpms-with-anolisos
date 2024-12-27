@@ -93,6 +93,7 @@ BUILD_RPM() {
 
 	rpmbuild -bb SPECS/openssh.spec --target $(uname -m) --define "_topdir $PWD" \
 		--define "debug_package %{nil}" \
+		--define "opensslver ${OPENSSLVER}" \
 		--define "opensshver ${OPENSSHVER}" \
 		--define "opensshpkgrel ${PKGREL}" \
 		--define 'no_gtk2 1' \
