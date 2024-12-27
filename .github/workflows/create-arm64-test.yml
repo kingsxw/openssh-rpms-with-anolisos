@@ -34,11 +34,15 @@ jobs:
         with:
           arch: aarch64
           distro: ubuntu_latest
-          run: docker build . --file ./docker/Dockerfile.amazonlinux --tag amazonlinux2023 --build-arg VERSION_NUM="2023"
-
-      - name: "Compile Amazon Linux 2023 (arm64)"
-        run: |
-            docker run --rm -v ${{ github.workspace }}/output:/data/amzn2023/RPMS/aarch64 amazonlinux2023
+          run: |
+           yum makecache timer
+           yum install -y libnsl
+           yum groupinstall -y "Development Tools"
+           yum install -y rpm-build pam-devel krb5-devel zlib-devel libXt-devel libX11-devel perl perl-IPC-Cmd
+           yum clean all
+           find . -type f -name '.keep' -delete
+           bash ./pullsrc.sh
+           bash ./compile.sh
 
       - uses: actions/upload-artifact@v4
         with: 
