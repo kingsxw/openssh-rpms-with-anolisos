@@ -29,18 +29,16 @@ jobs:
       #- name: Set up QEMU
       #  uses: docker/setup-qemu-action@v3
 
-      - name: Build the tagged Docker image
+      - uses: uraimo/run-on-arch-action@v2
+        name: Build the tagged Docker image
         with:
           arch: aarch64
           distro: ubuntu-latest
-        run: docker build . --file ./docker/Dockerfile.amazonlinux --tag amazonlinux2023 --build-arg VERSION_NUM="2023"
+          run: docker build . --file ./docker/Dockerfile.amazonlinux --tag amazonlinux2023 --build-arg VERSION_NUM="2023"
 
       - name: "Compile Amazon Linux 2023 (arm64)"
-        with:
-          arch: aarch64
-          distro: ubuntu-latest
         run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/amzn2023/RPMS/aarch64 amazonlinux2023
+            docker run --rm -v ${{ github.workspace }}/output:/data/amzn2023/RPMS/aarch64 amazonlinux2023
 
       - uses: actions/upload-artifact@v4
         with: 
