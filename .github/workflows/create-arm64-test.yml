@@ -15,7 +15,7 @@ on:
 jobs:
   build_al2023:
     # The type of runner that the job will run on
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -33,7 +33,7 @@ jobs:
         name: Build the tagged Docker image
         with:
           arch: aarch64
-          distro: ubuntu24.04
+          distro: ubuntu_latest
           run: docker build . --file ./docker/Dockerfile.amazonlinux --tag amazonlinux2023 --build-arg VERSION_NUM="2023"
 
       - name: "Compile Amazon Linux 2023 (arm64)"
