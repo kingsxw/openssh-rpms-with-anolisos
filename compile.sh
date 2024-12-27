@@ -91,7 +91,8 @@ BUILD_RPM() {
 	    install -v -m666 $__dir/downloads/$fn ./SOURCES/
 	done
 
-	rpmbuild -bb SPECS/openssh.spec --target $(uname -m) --define "_topdir $PWD" \
+	rpmbuild -bb SPECS/openssh.spec --target $(uname -m) --nodebuginfo \
+ 		--define "_topdir $PWD" \
 		--define "debug_package %{nil}" \
 		--define "opensslver ${OPENSSLVER}" \
 		--define "opensshver ${OPENSSHVER}" \
