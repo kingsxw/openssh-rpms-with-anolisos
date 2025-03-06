@@ -20,6 +20,7 @@ arg1="${1:-}"
 # allow command fail:
 # fail_command || true
 
+pwd
 source ./version.env
 
 OPENSSHMIR=https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable
@@ -35,22 +36,30 @@ if [[ ! -f $OPENSSLSRC ]]; then
   echo "Get:" $OPENSSLMIR/$OPENSSLSRC
   wget --no-check-certificate $OPENSSLMIR/$OPENSSLSRC || \
 	  echo "!!! Please download $OPENSSLSRC in $PWD by yourself."
+   ls -alh
 fi
 
 if [[ ! -f $OPENSSHSRC  ]]; then
   echo Get: $OPENSSHMIR/$OPENSSHSRC
   wget --no-check-certificate $OPENSSHMIR/$OPENSSHSRC || \
 	  echo "!!! Please download $OPENSSHSRC in $PWD by yourself."
+   ls -alh
 fi
 
 if [[ ! -f $ASKPASSSRC  ]]; then
   echo Get: $ASKPASSMIR/$ASKPASSSRC
   wget --no-check-certificate $ASKPASSMIR/$ASKPASSSRC || \
 	  echo "!!! Please download $ASKPASSSRC in $PWD by yourself."
+   ls -alh
 fi
 
 if [[ $($__dir/compile.sh GETEL) == "el5" && ! -f $PERLSRC ]]; then
   echo Get: $PERLMIR/$PERLSRC
   wget --no-check-certificate $PERLMIR/$PERLSRC || \
 	  echo "!!! Please download $PERLSRC in $PWD by yourself."
+   ls -alh
 fi
+
+pwd
+ls -alh
+ls -alh /root/rpmbuild/SOURCES/
