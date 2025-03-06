@@ -193,63 +193,6 @@ jobs:
           name: el7-amd64
           path: ${{ github.workspace }}/output
 
-  build_el6:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Build the tagged Docker image
-        run: docker build . --file ./docker/Dockerfile.centos --tag centos6 --build-arg VERSION_NUM="6"
-
-      - name: "Compile CentOS 6 (amd64)"
-        run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/el6/RPMS/x86_64 centos6
-      - uses: actions/upload-artifact@v4
-        with:
-          name: el6-amd64
-          path: ${{ github.workspace }}/output
-
-  build_el5:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: "Download packages for CentOS 5"
-        run: |
-          OPENSSHMIR=https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable
-          OPENSSLMIR=https://www.openssl.org/source/
-          ASKPASSMIR=https://src.fedoraproject.org/repo/pkgs/openssh/x11-ssh-askpass-1.2.4.1.tar.gz/8f2e41f3f7eaa8543a2440454637f3c3
-          PERLMIR=https://www.cpan.org/src/5.0
-          source ${{ github.workspace }}/version.env
-          pushd ${{ github.workspace }}/downloads
-          curl -O -L -k $OPENSSLMIR/$OPENSSLSRC
-          curl -O -L -k $OPENSSHMIR/$OPENSSHSRC
-          curl -O -L -k $ASKPASSMIR/$ASKPASSSRC
-          curl -O -L -k $PERLMIR/$PERLSRC
-          popd
-
-      - name: Build the tagged Docker image
-        run: docker build . --file ./docker/Dockerfile.centos --tag centos5 --build-arg VERSION_NUM="5"
-
-      - name: "Compile CentOS 5 (amd64)"
-        run: |
-          docker run --rm -v ${{ github.workspace }}/output:/data/el5/RPMS/x86_64 -v ${{ github.workspace }}/downloads:/data/downloads centos5
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: el5-amd64
-          path: ${{ github.workspace }}/output
-
   create_release:
     needs:
       - build_al2023
@@ -302,16 +245,6 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: el7-amd64
-          path: ./output
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: el6-amd64
-          path: ./output
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: el5-amd64
           path: ./output
 
       - name: Get tag message
