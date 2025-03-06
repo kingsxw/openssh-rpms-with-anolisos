@@ -89,6 +89,9 @@ BUILD_RPM() {
 	for fn in ${SOURCES[@]}; do
 	  CHECKEXISTS $fn && \
 	    install -v -m666 $__dir/downloads/$fn ./SOURCES/
+     echo $fn
+     pwd
+     ls -alh ./SOURCES/
 	done
  
  	#	--nodebuginfo \
