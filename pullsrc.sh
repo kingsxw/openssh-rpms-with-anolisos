@@ -20,7 +20,7 @@ arg1="${1:-}"
 # allow command fail:
 # fail_command || true
 
-pwd
+#pwd
 source ./version.env
 
 OPENSSHMIR=https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable
@@ -62,4 +62,4 @@ fi
 
 pwd
 ls -alh
-ls -alh /root/rpmbuild/SOURCES/
+#ls -alh /root/rpmbuild/SOURCES/
