@@ -90,10 +90,10 @@ BUILD_RPM() {
 	  CHECKEXISTS $fn && \
 	    install -v -m666 $__dir/downloads/$fn ./SOURCES/
 	done
-
+ 
+ 	#	--nodebuginfo \
 	rpmbuild -bb SPECS/openssh.spec \
 		--target $(uname -m) \ 
- 	#	--nodebuginfo \
  		--define "_topdir $PWD" \
 		--define "debug_package %{nil}" \
 		--define "opensslver ${OPENSSLVER}" \
