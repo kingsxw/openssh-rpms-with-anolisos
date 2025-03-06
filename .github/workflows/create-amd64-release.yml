@@ -260,8 +260,6 @@ jobs:
       - build_el9
       - build_el8
       - build_el7
-      - build_el6
-      - build_el5
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
