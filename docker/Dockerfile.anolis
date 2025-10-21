@@ -8,6 +8,9 @@ WORKDIR /data
 COPY . /data
 
 RUN if [ "$VERSION_NUM" = "8" ]; then \
+        yum -y update rpm  && \
+        rm -rf /var/lib/rpm/* && \
+        cp -rf $(ls -1d /var/lib/rpmrebuild* | head -1)/* /var/lib/rpm/ && \
         yum install -y perl perl-IPC-Cmd; \
     elif [ "$VERSION_NUM" = "7.9-x86_64" ] || [ "$VERSION_NUM" = "7.9-aarch64" ]; then \
         yum install -y perl-IPC-Cmd imake; \
