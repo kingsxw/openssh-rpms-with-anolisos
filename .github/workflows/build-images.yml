@@ -209,7 +209,7 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:amazonlinux2023,${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:al2023
           build-args: |
-            VERSION_NUM=7
+            VERSION_NUM=7.9-x86_64
 
       - name: Log out from Docker Hub
         run: docker logout
